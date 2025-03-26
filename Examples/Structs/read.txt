@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Staff {
+    char name[100];
+    // Other fields for staff can be added here
+};
+
+struct CollegeManagement {
+    struct Staff *staffList;
+    int numStaff;
+};
+
+void addStaff(struct CollegeManagement *college) {
+    int num;
+
+    // Prompt the user for the number of staff to add
+    printf("Enter number of staff to add: ");
+    scanf("%d", &num);
+
+    // If staffList is NULL, it means this is the first allocation
+    if (college->staffList == NULL) {
+        college->staffList = (struct Staff *)malloc(num * sizeof(struct Staff));
+        if (college->staffList == NULL) {
+            printf("Memory allocation failed\n");
+            return; // Exit if malloc fails
+        }
+        college->numStaff = num; // Update number of staff
+    } else {
+        // If staffList already exists, use realloc to expand the memory
+        college->staffList = (struct Staff *)realloc(college->staffList, (college->numStaff + num) * sizeof(struct Staff));
+        if (college->staffList == NULL) {
+            printf("Memory allocation failed\n");
+            return; // Exit if realloc fails
+        }
+        college->numStaff += num; // Update total staff count
+    }
+
+    // Now input the staff names and add them to the staffList
+    for (int i = college->numStaff - num; i < college->numStaff; i++) {
+        printf("Enter Name for staff member %d: ", i + 1);
+        scanf("%s", college->staffList[i].name);
+    }
+}
+
+int main() {
+    struct CollegeManagement college = {NULL, 0}; // Initialize college with NULL staffList and 0 staff count
+
+    addStaff(&college);
+
+    // Print added staff members
+    printf("\nStaff added:\n");
+    for (int i = 0; i < college.numStaff; i++) {
+        printf("%d. %s\n", i + 1, college.staffList[i].name);
+    }
+
+    // Free the allocated memory after use
+    free(college.staffList);
+    return 0;
+}
