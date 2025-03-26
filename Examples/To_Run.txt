@@ -1,0 +1,7 @@
+To run in command prompt
+-------------------------------------------------
+open file directory
+
+filename.c ---> enter
+gcc -o executableFilename program.c ----> enter
+executableFilename ----> enter
