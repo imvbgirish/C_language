@@ -1,14 +1,14 @@
 #include <stdio.h>
-#include "wifiManagement.h"
+#include <stdlib.h>
+#include "WiFiManagement.h"
 
 int main()
 {
-    wifiManagement wifi;
-    wifi.wifiList = NULL;
-    wifi.wifiSize = 0;
+    WiFiManagement wifi;
+    wifi.WiFiList = NULL;
+    //wifi.wifiSize = 0;
 
-    readData(&wifi);
-    displayWifi(&wifi);
+    wifiMenu(&wifi);
 
     return 0;
 }
