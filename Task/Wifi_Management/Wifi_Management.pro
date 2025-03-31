@@ -3,10 +3,12 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
+DESTDIR = $$PWD/bins
+
 SOURCES += \
-        main.c \
-        wifiManagement.c
+        WiFiManagement.c \
+        main.c
 
 HEADERS += \
-    wifi.h \
-    wifiManagement.h
+    WiFiManagement.h \
+    wifi.h
