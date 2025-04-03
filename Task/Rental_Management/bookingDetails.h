@@ -1,11 +1,14 @@
 #ifndef BOOKINGDETAILS_H
 #define BOOKINGDETAILS_H
 
-#include "manageLogin.h"
-
 typedef struct bookingDetails{
-    login *user;
-    int Duration;
+    char type[10];
+    char name[10];
+    int contactNumber;
+    char brand[15];
+    char vehicleNum[10];
+    int rentDuration;
+    int rentPrice;
 }book;
 
 #endif // BOOKINGDETAILS_H
