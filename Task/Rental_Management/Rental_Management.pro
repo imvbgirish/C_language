@@ -6,6 +6,7 @@ CONFIG -= qt
 DESTDIR = $$PWD/bins
 
 SOURCES += \
+        bookingDetails.c \
         main.c \
         manageLogin.c \
         vehicleManagement.c
