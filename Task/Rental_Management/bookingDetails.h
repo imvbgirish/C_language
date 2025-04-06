@@ -2,11 +2,11 @@
 #define BOOKINGDETAILS_H
 
 typedef struct bookingDetails{
-    char type[10];
-    char name[10];
-    int contactNumber;
+    char type[20];
+    char name[20];
+    char contactNumber[15];
     char brand[15];
-    char vehicleNum[10];
+    char vehicleNum[15];
     int rentDuration;
     int rentPrice;
 }book;
