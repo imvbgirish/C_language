@@ -43,7 +43,7 @@ void addVehicleData(manageVehicle *vehicle, char *type, char *brand, char *model
         }
 
         //printf("3");
-        vehicle->bikelist[numOfBikes].bike = (struct rentVehicleDetails *)malloc(sizeof(struct rentVehicleDetails));
+        vehicle->bikelist[numOfBikes].bike = (struct rentVehicleDetails *)malloc(1*sizeof(struct rentVehicleDetails));
         if (vehicle->bikelist[numOfBikes].bike == NULL) {
             printf("Memory allocation failed for bike details\n");
             return;
@@ -97,7 +97,7 @@ void addVehicleData(manageVehicle *vehicle, char *type, char *brand, char *model
 }
 
 void displayBikes(manageVehicle *vehicle){
-    int i;
+
     if(vehicle->bikelist == NULL){
         printf("No data to display\n");
         return;
@@ -105,7 +105,7 @@ void displayBikes(manageVehicle *vehicle){
         printf("\n\tBrand\t\tModel\t\tVehicleNumber\t\tStatus\t\tRentPrice\n");
         printf("--------------------------------------------"
                "----------------------------------------------\n");
-        for(i=0; i<numOfBikes; i++){
+        for(int i=0; i<numOfBikes; i++){
             printf("%12s %17s %19s %21s %15d\n",
                    vehicle->bikelist[i].bike->brand,
                    vehicle->bikelist[i].bike->model,
@@ -117,7 +117,7 @@ void displayBikes(manageVehicle *vehicle){
 }
 
 void displayCars(manageVehicle *vehicle){
-    int i;
+
     if(vehicle->carlist == NULL){
         printf("No data to display\n");
         return;
@@ -125,7 +125,7 @@ void displayCars(manageVehicle *vehicle){
         printf("\n\tBrand\t\tModel\t\tvehicleNumber\t\tStatus\t\tRentPrice\n");
         printf("--------------------------------------------"
                "----------------------------------------------\n");
-        for(i=0; i<numOfCars; i++){
+        for(int i=0; i<numOfCars; i++){
             printf("%12s %17s %19s %21s %15d\n",
                    vehicle->carlist[i].car->brand,
                    vehicle->carlist[i].car->model,
@@ -165,6 +165,7 @@ void addBike(manageVehicle *vehicle){
     scanf("%d",&rentPrice);
 
     addVehicleData(vehicle, type, brand, model, vehicleNum, status, rentPrice);
+    printf("Bike details added.\n");
 }
 
 void addCar(manageVehicle *vehicle){
@@ -196,6 +197,7 @@ void addCar(manageVehicle *vehicle){
     scanf("%d",&rentPrice);
 
     addVehicleData(vehicle, type, brand, model, vehicleNum, status, rentPrice);
+    printf("Car details added.\n");
 }
 
 void writeVehicleData(manageVehicle *vehicle){
@@ -213,8 +215,8 @@ void writeVehicleData(manageVehicle *vehicle){
                 "Bike",
                 vehicle->bikelist[i].bike->brand,
                 vehicle->bikelist[i].bike->model,
-                vehicle->bikelist[i].bike->status,
                 vehicle->bikelist[i].bike->vehicleNum,
+                vehicle->bikelist[i].bike->status,
                 vehicle->bikelist[i].bike->rentPrice);
     }
 
@@ -223,8 +225,8 @@ void writeVehicleData(manageVehicle *vehicle){
                 "Car",
                 vehicle->carlist[i].car->brand,
                 vehicle->carlist[i].car->model,
-                vehicle->carlist[i].car->status,
                 vehicle->carlist[i].car->vehicleNum,
+                vehicle->carlist[i].car->status,
                 vehicle->carlist[i].car->rentPrice);
     }
     fclose(fp);
@@ -325,12 +327,13 @@ void updateBikePrice(manageVehicle *vehicle){
                 printf("Enter price: ");
                 scanf("%d",&newPrice);
                 vehicle->bikelist[i].bike->rentPrice = newPrice;
+                printf("Bike price updated...\n");
                 return;
             }
         }
     }
     if(!found){
-        printf("Bike not found for given brand and model.");
+        printf("Bike not found for given brand and model.\n");
         return;
     }
 }
@@ -361,20 +364,20 @@ void updateCarPrice(manageVehicle *vehicle){
                 printf("Enter price: ");
                 scanf("%d",&newPrice);
                 vehicle->carlist[i].car->rentPrice = newPrice;
+                printf("Car price updated..\n");
                 return;
             }
         }
     }
     if(!found){
-        printf("Car not found for given brand and model.");
+        printf("Car not found for given brand and model.\n");
         return;
     }
 }
 
-void sortByPrice(manageVehicle *vehicle){
+void sortByPriceBike(manageVehicle *vehicle){
     int i,j;
     bike temp;
-    car ref;
 
     if(vehicle->bikelist == NULL){
         printf("No data to sort\n");
@@ -389,7 +392,16 @@ void sortByPrice(manageVehicle *vehicle){
             }
         }
     }
+}
 
+void sortByPriceCar(manageVehicle *vehicle){
+    int i,j;
+    car ref;
+
+    if(vehicle->carlist == NULL){
+        printf("No data to sort\n");
+        return;
+    }
     for(i=0; i<numOfCars; i++){
         for(j=i+1; j<numOfCars; j++){
             if(vehicle->carlist[i].car->rentPrice > vehicle->carlist[j].car->rentPrice){
@@ -413,20 +425,20 @@ void readBookingData(manageVehicle *vehicle){
 
     char type[10];
     char name[10];
-    int contactNumber;
+    char contactNumber[15];
     char brand[15];
     char vehicleNum[10];
     int rentDuration;
     int rentPrice;
 
-    while(fscanf(fp,"%s %s %d %s %s %d %d", type, name, &contactNumber, brand,
+    while(fscanf(fp,"%s %s %s %s %s %d %d", type, name, contactNumber, brand,
                   vehicleNum, &rentDuration, &rentPrice) !=EOF){
         addBookingData(vehicle, type, name, contactNumber, brand, vehicleNum, rentDuration, rentPrice);
     }
     fclose(fp);
 }
 
-void addBookingData(manageVehicle *vehicle,char *type, char *name, int contactNumber, char *brand, char *vehicleNum, int rentDuration,int rentPrice){
+void addBookingData(manageVehicle *vehicle,char *type, char *name, char *contactNumber, char *brand, char *vehicleNum, int rentDuration,int rentPrice){
     FILE *fp;
     fp = fopen("BookingData.txt","r");
 
@@ -442,7 +454,7 @@ void addBookingData(manageVehicle *vehicle,char *type, char *name, int contactNu
 
     strcpy(vehicle->bookinglist[bookHistory].type,type);
     strcpy(vehicle->bookinglist[bookHistory].name,name);
-    vehicle->bookinglist[bookHistory].contactNumber = contactNumber;
+    strcpy(vehicle->bookinglist[bookHistory].contactNumber,contactNumber);
     strcpy(vehicle->bookinglist[bookHistory].brand,brand);
     strcpy(vehicle->bookinglist[bookHistory].vehicleNum,vehicleNum);
     vehicle->bookinglist[bookHistory].rentDuration = rentDuration;
@@ -454,15 +466,14 @@ void addBookingData(manageVehicle *vehicle,char *type, char *name, int contactNu
 void writeBookingData(manageVehicle *vehicle){
     FILE *fp;
     fp = fopen("BookingData.txt","w");
-    int i;
 
     if(fp == NULL){
         printf("File not found\n");
         exit(0);
     }
 
-    for(i=0; i<bookHistory; i++){
-        fprintf(fp,"%s %s %d %s %s %d %d\n",
+    for(int i=0; i<bookHistory; i++){
+        fprintf(fp,"%s %s %s %s %s %d %d\n",
                 vehicle->bookinglist[i].type,
                 vehicle->bookinglist[i].name,
                 vehicle->bookinglist[i].contactNumber,
@@ -475,7 +486,7 @@ void writeBookingData(manageVehicle *vehicle){
 }
 
 void displayRentalHistory(manageVehicle *vehicle){
-    int i;
+
     if(vehicle->bookinglist == NULL){
         printf("No data to display\n");
         return;
@@ -483,8 +494,8 @@ void displayRentalHistory(manageVehicle *vehicle){
         printf("\n\tType\tName\tContactNumber\tBrand\tVehicleNumber\tRentDuration\tRentPrice\n");
         printf("---------------------------------------------"
                "---------------------------------------------\n");
-        for(i=0; i<bookHistory; i++){
-            printf("%11s %10s %10d %10s %12s %11d %15d\n",
+        for(int i=0; i<bookHistory; i++){
+            printf("%11s %10s %10s %10s %12s %11d %15d\n",
                    vehicle->bookinglist[i].type,
                    vehicle->bookinglist[i].name,
                    vehicle->bookinglist[i].contactNumber,
@@ -499,7 +510,7 @@ void displayRentalHistory(manageVehicle *vehicle){
 void rentBike(manageVehicle *vehicle){
 
     char name[10];
-    int contactNumber;
+    char contactNumber[15];
     int rentDuration;
 
     char brand[15];
@@ -523,12 +534,12 @@ void rentBike(manageVehicle *vehicle){
                 scanf("%s",name);
 
                 printf("Enter contact number: ");
-                scanf("%d",&contactNumber);
+                scanf("%s",contactNumber);
 
                 printf("Enter rent duration in days: ");
                 scanf("%d",&rentDuration);
 
-                printf("Bike Booked\n");
+                printf("Bike Booked Successfully...\n");
                 strcpy(vehicle->bikelist[i].bike->status,"Booked");
                 addBookingData(vehicle,"Bike", name, contactNumber, brand,
                                vehicle->bikelist[i].bike->vehicleNum,
@@ -548,7 +559,7 @@ void rentBike(manageVehicle *vehicle){
 void rentCar(manageVehicle *vehicle){
 
     char name[10];
-    int contactNumber;
+    char contactNumber[15];
     int rentDuration;
 
     char brand[15];
@@ -572,12 +583,12 @@ void rentCar(manageVehicle *vehicle){
                 scanf("%s",name);
 
                 printf("Enter contact number: ");
-                scanf("%d",&contactNumber);
+                scanf("%s",contactNumber);
 
                 printf("Enter rent duration in days: ");
                 scanf("%d",&rentDuration);
 
-                printf("Bike Booked\n");
+                printf("Car Booked Successfully...\n");
                 strcpy(vehicle->carlist[i].car->status,"Booked");
                 addBookingData(vehicle,"Car", name, contactNumber, brand,
                                vehicle->carlist[i].car->vehicleNum,
@@ -585,14 +596,366 @@ void rentCar(manageVehicle *vehicle){
                 break;
             }
             else if(strcasecmp(vehicle->carlist[i].car->status,"Booked")==0){
-                printf("Unable to book, bike is already booked.\n");
+                printf("Unable to book, Car is already booked.\n");
                 break;
             }
         }
     }
     if(!found){
-        printf("Bike not found\n");
+        printf("Car not found\n");
     }
 }
+
+void returnBike(manageVehicle *vehicle){
+    char vehicleNumber[10];
+    int found = 0;
+
+    printf("\nReturn Vehicle\n");
+    printf("-------------------------------\n");
+    printf("Enter vehicle number: ");
+    scanf("%s",vehicleNumber);
+
+    if(vehicle->bikelist == NULL){
+        printf("No vehicle to return.\n");
+        return;
+    }
+    else{
+        for(int i=0; i<numOfBikes; i++){
+            if(strcasecmp(vehicle->bikelist[i].bike->vehicleNum,vehicleNumber)==0){
+                found = 1;
+                strcpy(vehicle->bikelist[i].bike->status,"Available");
+                printf("Vehicle returned successfully.\n");
+                return;
+            }
+        }
+    }
+
+    if(!found){
+        printf("Bike not found.\n");
+        return;
+    }
+}
+
+void returnCar(manageVehicle *vehicle){
+    char vehicleNumber[10];
+    int found = 0;
+
+    printf("\nReturn Vehicle\n");
+    printf("-------------------------------\n");
+    printf("Enter vehicle number: ");
+    scanf("%s",vehicleNumber);
+
+    if(vehicle->carlist == NULL){
+        printf("No vehicle to return.\n");
+        return;
+    }
+    else{
+        for(int i=0; i<numOfCars; i++){
+            if(strcasecmp(vehicle->carlist[i].car->vehicleNum,vehicleNumber)==0){
+                found = 1;
+                strcpy(vehicle->carlist[i].car->status,"Available");
+                printf("Vehicle returned successfully.\n");
+                return;
+            }
+        }
+    }
+
+    if(!found){
+        printf("Car not found.\n");
+        return;
+    }
+}
+
+enum{
+    Bike = 1,
+    Car,
+    Exit
+};
+
+void displayVehicle(manageVehicle *vehicle){
+    int choice = 0;
+
+    while(1){
+        printf("\nDisplay Vehicles\n");
+        printf("-------------------------------\n");
+        printf("1.Bike\n2.Car\n3.Exit\n");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice){
+        case Bike:displayBikes(vehicle);
+            break;
+
+        case Car:displayCars(vehicle);
+            break;
+
+        case Exit:printf("Exiting...\n");
+            return;
+
+        default: printf("Invalid Choice\n");
+            break;
+        }
+    }
+}
+
+void addVehicles(manageVehicle *vehicle){
+    int choice = 0;
+
+    while(1){
+        printf("\nAdd Vehicles\n");
+        printf("-------------------------------\n");
+        printf("1.Bike\n2.Car\n3.Exit\n");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice){
+        case Bike:addBike(vehicle);
+            break;
+
+        case Car:addCar(vehicle);
+            break;
+
+        case Exit:printf("Exiting...\n");
+            return;
+
+        default: printf("Invalid Choice\n");
+            break;
+        }
+    }
+}
+
+void searchVehicles(manageVehicle *vehicle){
+    int choice = 0;
+
+    while(1){
+        printf("\nSearch Vehicles\n");
+        printf("-------------------------------\n");
+        printf("1.Bike\n2.Car\n3.Exit\n");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice){
+        case Bike:searchBike(vehicle);
+            break;
+
+        case Car:searchCar(vehicle);
+            break;
+
+        case Exit:printf("Exiting...\n");
+            return;
+
+        default: printf("Invalid Choice\n");
+            break;
+        }
+    }
+}
+
+void sort(manageVehicle *vehicle){
+    int choice = 0;
+
+    while(1){
+        printf("\nSort Vehicles\n");
+        printf("-------------------------------\n");
+        printf("1.Bike\n2.Car\n3.Exit\n");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice){
+        case Bike:sortByPriceBike(vehicle);
+            displayBikes(vehicle);
+            break;
+
+        case Car:sortByPriceCar(vehicle);
+            displayCars(vehicle);
+            break;
+
+        case Exit:printf("Exiting...\n");
+            return;
+
+        default: printf("Invalid Choice\n");
+            break;
+        }
+    }
+}
+
+void updatePrice(manageVehicle *vehicle){
+    int choice = 0;
+
+    while(1){
+        printf("\nUpdate Vehicle Price\n");
+        printf("-------------------------------\n");
+        printf("1.Bike\n2.Car\n3.Exit\n");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice){
+        case Bike:updateBikePrice(vehicle);
+            break;
+
+        case Car:updateCarPrice(vehicle);
+            break;
+
+        case Exit:printf("Exiting...\n");
+            return;
+
+        default: printf("Invalid Choice\n");
+            break;
+        }
+    }
+}
+
+void rentVehicles(manageVehicle *vehicle){
+    int choice = 0;
+
+    while(1){
+        printf("\nRent Vehicles\n");
+        printf("-------------------------------\n");
+        printf("1.Bike\n2.Car\n3.Exit\n");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice){
+        case Bike:rentBike(vehicle);
+            break;
+
+        case Car:rentCar(vehicle);
+            break;
+
+        case Exit:printf("Exiting...\n");
+            return;
+
+        default: printf("Invalid Choice\n");
+            break;
+        }
+    }
+}
+
+void returnVehicles(manageVehicle *vehicle){
+    int choice = 0;
+
+    while(1){
+        printf("\nReturn Vehicles\n");
+        printf("-------------------------------\n");
+        printf("1.Bike\n2.Car\n3.Exit\n");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice){
+        case Bike:returnBike(vehicle);
+            break;
+
+        case Car:returnCar(vehicle);
+            break;
+
+        case Exit:printf("Exiting...\n");
+            return;
+
+        default: printf("Invalid Choice\n");
+            break;
+        }
+    }
+}
+
+void deleteVehicle(manageVehicle *vehicle){
+    int choice = 0;
+
+    while(1){
+        printf("\nDelete Vehicles\n");
+        printf("-------------------------------\n");
+        printf("1.Bike\n2.Car\n3.Exit\n");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice){
+        case Bike:deleteBike(vehicle);
+            break;
+
+        case Car:deleteCar(vehicle);
+            break;
+
+        case Exit:printf("Exiting...\n");
+            return;
+
+        default: printf("Invalid Choice\n");
+            break;
+        }
+    }
+}
+
+void deleteBike(manageVehicle *vehicle){
+    char vehicleNum[10];
+    int found = 0;
+
+    printf("Delete Vehicle\n");
+    printf("-------------------------------\n");
+    printf("Enter vehicle number: ");
+    scanf("%s",vehicleNum);
+
+    if(vehicle->bikelist == NULL){
+        printf("No bikes to delete.\n");
+        return;
+    }
+    for(int i=0; i<numOfBikes; i++){
+        if(strcasecmp(vehicle->bikelist[i].bike->vehicleNum,vehicleNum)==0){
+            found = 1;
+            free(vehicle->bikelist[i].bike);
+
+            for(int j=i; j<numOfBikes-1; j++){
+                vehicle->bikelist[j] = vehicle->bikelist[j+1];
+            }
+            numOfBikes--;
+            printf("Bike deleted successfully.\n");
+            break;
+        }
+    }
+    if(!found){
+        printf("No vehicle found.\n");
+        return;
+    }
+}
+
+void deleteCar(manageVehicle *vehicle){
+    char vehicleNum[10];
+    int found = 0;
+
+    printf("Delete Vehicle\n");
+    printf("-------------------------------\n");
+    printf("Enter vehicle number: ");
+    scanf("%s",vehicleNum);
+
+    if(vehicle->carlist == NULL){
+        printf("No bikes to delete.\n");
+        return;
+    }
+    for(int i=0; i<numOfCars; i++){
+        if(strcasecmp(vehicle->carlist[i].car->vehicleNum,vehicleNum)==0){
+            found = 1;
+            free(vehicle->carlist[i].car);
+
+            for(int j=i; j<numOfCars-1; j++){
+                vehicle->carlist[j] = vehicle->carlist[j+1];
+            }
+            numOfCars--;
+            printf("Car deleted successfully.\n");
+            break;
+        }
+    }
+    if(!found){
+        printf("No vehicle found.\n");
+        return;
+    }
+}
+
+void readAllData(manageVehicle *vehicle){
+    vehicle->bikelist = NULL;
+    vehicle->carlist = NULL;
+    vehicle->bookinglist = NULL;
+
+    readVehicleData(vehicle);
+    readBookingData(vehicle);
+}
+
+
+
 
 

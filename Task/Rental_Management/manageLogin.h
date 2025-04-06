@@ -3,6 +3,7 @@
 
 #include "adminDetails.h"
 #include "customerDetails.h"
+#include "vehicleManagement.h"
 
 typedef struct managelogin{
     admin *adminList;
@@ -10,7 +11,7 @@ typedef struct managelogin{
 }login;
 
 void readPersonData(login *login);
-void addPersonData(login *login,char *name,int contactNumber,char *emailID, int password, char *isAdmin);
+void addPersonData(login *login,char *name,char *contactNumber,char *emailID, char *password, char *isAdmin);
 
 void displayAdminlist(login *login);
 void displayCustomerlist(login *login);
@@ -23,10 +24,15 @@ void registerUser(login *login);
 
 void writePersonData(login *login);
 
-void adminMenu(login *login);
-void userMenu(login *login);
-
 void adminLoginMenu(login *login);
 void userLoginMenu(login *login);
+
+void mainMenu(login *login);
+
+void adminMenu(manageVehicle *vehicle);
+void userMenu(manageVehicle *vehicle);
+
+void readLoginData(login *login);
+
 
 #endif // MANAGELOGIN_H
