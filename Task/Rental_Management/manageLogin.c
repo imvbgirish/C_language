@@ -1,36 +1,37 @@
 #include "manageLogin.h"
-#include "vehicleManagement.h"
+//#include "vehicleManagement.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
 
 manageVehicle vehicle;
+
 int numOfAdmins = 0;
 int numOfCustomers = 0;
 void readPersonData(login *login){
+
     FILE *fp;
     fp = fopen("PersonData.txt","r");
-
     if(fp == NULL){
-        printf("File not found\n");
+        printf("Person data file not found\n");
         exit(0);
     }
 
-    char name[10];
+    char name[20];
     char contactNumber[15];
     char emailID[20];
-    char password[15];
-    char isAdmin[5];
+    char password[20];
+    char isAdmin[10];
 
-    while(fscanf(fp,"%s %s %s %s %s", name, contactNumber, emailID, password, isAdmin) !=EOF){
-        addPersonData(login, name, contactNumber, emailID, password, isAdmin);
+    while(fscanf(fp,"%s %s %s %s %s",name,contactNumber,emailID,password,isAdmin)!=EOF){
+        //printf("%s %s %s %s %s\n",name,contactNumber,emailID,password,isAdmin);
+        addPersonData(login,name,contactNumber,emailID,password,isAdmin);
     }
     fclose(fp);
 }
 
 void addPersonData(login *login,char *name,char *contactNumber,char *emailID,char *password, char *isAdmin){
     if(strcasecmp(isAdmin,"Yes")==0){
-
         if(login->adminList == NULL){
             login->adminList = (struct adminDetails *)malloc(1*sizeof(struct adminDetails));
             if(login->adminList == NULL){
@@ -54,7 +55,6 @@ void addPersonData(login *login,char *name,char *contactNumber,char *emailID,cha
         strcpy(login->adminList[numOfAdmins].admin->isAdmin,isAdmin);
 
         numOfAdmins++;
-        return;
     }
     else if(strcasecmp(isAdmin,"No")==0){
 
@@ -81,16 +81,15 @@ void addPersonData(login *login,char *name,char *contactNumber,char *emailID,cha
         strcpy(login->customerList[numOfCustomers].customer->isAdmin,isAdmin);
 
         numOfCustomers++;
-        return;
 
     }else{
-        printf("No data to display\n");
+        printf("No user data to display\n");
         return;
     }
 }
 
 void displayAdminlist(login *login){
-    int i;
+
     if(login->adminList == NULL){
         printf("No data to display\n");
         return;
@@ -98,7 +97,7 @@ void displayAdminlist(login *login){
         printf("\n\tName\t\tContact\t\t\tEmailID\t\t\tPassword\n");
         printf("-----------------------------------------"
                "-----------------------------------------\n");
-        for(i=0; i<numOfAdmins; i++){
+        for(int i=0; i<numOfAdmins; i++){
             printf("%12s %18s %26s %18s\n",
                    login->adminList[i].admin->name,
                    login->adminList[i].admin->contactNumber,
@@ -109,7 +108,7 @@ void displayAdminlist(login *login){
 }
 
 void displayCustomerlist(login *login){
-    int i;
+
     if(login->customerList == NULL){
         printf("No data to display\n");
         return;
@@ -117,7 +116,7 @@ void displayCustomerlist(login *login){
         printf("\n\tName\t\tContact\t\t\tEmailID\t\t\tPassword\n");
         printf("-----------------------------------------"
                "-----------------------------------------\n");;
-        for(i=0; i<numOfCustomers; i++){
+        for(int i=0; i<numOfCustomers; i++){
             printf("%12s %18s %26s %18s\n",
                    login->customerList[i].customer->name,
                    login->customerList[i].customer->contactNumber,
@@ -130,9 +129,10 @@ void displayCustomerlist(login *login){
 void registerAdmin(login *login){
     printf("\nRegister Admin \n");
     printf("--------------------------\n");
+    int attempt = 1;
 
     char name[10];
-    char contactNumber[15];
+    char contactNumber[10];
     char emailID[20];
     char password[15];
     char isAdmin[5];
@@ -140,8 +140,22 @@ void registerAdmin(login *login){
     printf("Enter name: ");
     scanf("%s",name);
 
-    printf("Enter contact Number: ");
-    scanf("%s",contactNumber);
+    while(attempt<=3){
+        printf("Enter contact Number: ");
+        scanf("%s",contactNumber);
+
+        if(strlen(contactNumber)!=10){
+            printf("Enter valid contact number.\n");
+            attempt++;
+        }else{
+            break;
+        }
+    }
+
+    if(attempt > 3){
+        printf("\nRegistration failed,try after some time.\n");
+        return;
+    }
 
     printf("Enter EmailID: ");
     scanf("%s",emailID);
@@ -156,15 +170,29 @@ void registerAdmin(login *login){
 }
 
 void adminLogin(login *login){
+    int attempt = 1;
     char contactNumber[15];
     char password[15];
     int found =0;
 
-
     printf("\nLogin\n");
     printf("-------------------------------------\n");
-    printf("Enter Contact Number: ");
-    scanf("%s",contactNumber);
+
+    while(attempt<=3){
+        printf("Enter contact Number: ");
+        scanf("%s",contactNumber);
+
+        if(strlen(contactNumber)!=10){
+            printf("Enter valid contact number.\n");
+            attempt++;
+        }else{
+            break;
+        }
+    }
+    if(attempt > 3){
+        printf("\nLogin failed,try using valid number.\n");
+        return;
+    }
 
     if(login->adminList == NULL){
         printf("No data found\n");
@@ -176,7 +204,9 @@ void adminLogin(login *login){
                 scanf("%s",password);
                 found = 1;
                 if(strcasecmp(login->adminList[i].admin->password,password)==0){
-                    printf("Successfull...\n");
+                    // strcpy(login->loggedName, login->adminList[i].admin->name);
+                    strcpy(login->loggedContact, login->adminList[i].admin->contactNumber);
+                    printf("Login successfull...\n");
                     adminMenu(&vehicle);
                     break;
                 }else{
@@ -193,14 +223,29 @@ void adminLogin(login *login){
 }
 
 void userLogin(login *login){
+    int attempt = 1;
     char contactNumber[15];
     char password[15];
     int found = 0;
 
     printf("\nLogin\n");
     printf("-------------------------------------\n");
-    printf("Enter Contact Number: ");
-    scanf("%s",contactNumber);
+
+    while(attempt<=3){
+        printf("Enter contact Number: ");
+        scanf("%s",contactNumber);
+
+        if(strlen(contactNumber)!=10){
+            printf("Enter valid contact number.\n");
+            attempt++;
+        }else{
+            break;
+        }
+    }
+    if(attempt > 3){
+        printf("\nLogin failed,try using valid number.\n");
+        return;
+    }
 
     if(login->customerList == NULL){
         printf("No data found\n");
@@ -212,7 +257,9 @@ void userLogin(login *login){
                 scanf("%s",password);
                 found = 1;
                 if(strcasecmp(login->customerList[i].customer->password,password)==0){
-                    printf("Successfull...\n");
+                    // strcpy(login->loggedName, login->customerList[i].customer->name);
+                    strcpy(login->loggedContact, login->customerList[i].customer->contactNumber);
+                    printf("Login successfull...\n");
                     userMenu(&vehicle);
                     break;
                 }else{
@@ -232,18 +279,32 @@ void userLogin(login *login){
 void registerUser(login *login){
     printf("\nRegister User \n");
     printf("--------------------------\n");
-
-    char name[10];
+    int attempt = 1;
+    char username[10];
     char contactNumber[15];
     char emailID[20];
     char password[15];
     char isAdmin[5];
 
     printf("Enter name: ");
-    scanf("%s",name);
+    scanf("%s",username);
 
-    printf("Enter contact Number: ");
-    scanf("%s",contactNumber);
+    while(attempt<=3){
+        printf("Enter contact Number: ");
+        scanf("%s",contactNumber);
+
+        if(strlen(contactNumber)!=10){
+            printf("Enter valid contact number.\n");
+            attempt++;
+        }else{
+            break;
+        }
+    }
+    if(attempt > 3){
+        printf("\nRegistration failed,try after some time.\n");
+        return;
+    }
+
 
     printf("Enter EmailID: ");
     scanf("%s",emailID);
@@ -254,20 +315,19 @@ void registerUser(login *login){
     strcpy(isAdmin,"No");
 
     printf("User registered successfully...\n");
-    addPersonData(login, name, contactNumber, emailID, password, isAdmin);
+    addPersonData(login, username, contactNumber, emailID, password, isAdmin);
 }
 
 void writePersonData(login *login){
     FILE *fp;
     fp = fopen("PersonData.txt","w");
-    int i;
 
     if(fp == NULL){
         printf("File not found\n");
         exit(0);
     }
 
-    for(i=0; i<numOfAdmins; i++){
+    for(int i=0; i<numOfAdmins; i++){
         fprintf(fp,"%s %s %s %s %s\n",
                 login->adminList[i].admin->name,
                 login->adminList[i].admin->contactNumber,
@@ -276,7 +336,7 @@ void writePersonData(login *login){
                 login->adminList[i].admin->isAdmin);
     }
 
-    for(i=0; i<numOfCustomers; i++){
+    for(int i=0; i<numOfCustomers; i++){
         fprintf(fp,"%s %s %s %s %s\n",
                 login->customerList[i].customer->name,
                 login->customerList[i].customer->contactNumber,
@@ -290,7 +350,7 @@ void writePersonData(login *login){
 enum{
     SignIn = 1,
     SignUp,
-    Logout
+    Back
 };
 
 void adminLoginMenu(login *login){
@@ -298,7 +358,7 @@ void adminLoginMenu(login *login){
     while(1){
         printf("\nAdmin Login Menu\n");
         printf("--------------------------\n");
-        printf("1.SignIn\n2.SignUp\n3.LogOut\n");
+        printf("1.SignIn\n2.SignUp\n3.Back\n");
         printf("\nEnter your choice: ");
         scanf("%d", &choice);
 
@@ -309,8 +369,8 @@ void adminLoginMenu(login *login){
         case SignUp: registerAdmin(login);
             break;
 
-        case Logout:
-            printf("Logging out...\n");
+        case Back:
+            printf("Going Back...\n");
             return;
 
         default:printf("Invalid choice\n");
@@ -324,7 +384,7 @@ void userLoginMenu(login *login){
     while(1){
         printf("\nUser Login Menu\n");
         printf("--------------------------\n");
-        printf("1.SignIn\n2.SignUp\n3.LogOut\n");
+        printf("1.SignIn\n2.SignUp\n3.Back\n");
         printf("\nEnter your choice: ");
         scanf("%d",&choice);
 
@@ -335,7 +395,7 @@ void userLoginMenu(login *login){
         case SignUp: registerUser(login);
             break;
 
-        case Logout: printf("Logging out...\n");
+        case Back: printf("Going Back...\n");
             return;
 
         default:printf("Invalid choice\n");
@@ -351,12 +411,12 @@ enum {
 };
 void mainMenu(login *login){
 
-    readLoginData(login);
+    readPersonData(login);
     readAllData(&vehicle);
 
     int choice = 0;
     printf("Vehicle Rental Application\n");
-   printf("--------------------------\n");
+    printf("--------------------------\n");
     while(1){
         printf("\nMain Menu\n");
         printf("--------------------------\n");
@@ -409,7 +469,7 @@ void adminMenu(manageVehicle *vehicle){
         printf("--------------------------\n");
         printf("1.Add Vehicle\n2.Display Vehicle\n3.Search Vehicle\n4.Sort Vehicle"
                "\n5.Update Vehicle Price\n6.Rent Vehicle\n7.Return Vehicle"
-               "\n8.Delete Vehicle\n9.Display Rental History\n10.Exit\n");
+               "\n8.Delete Vehicle\n9.Display Rental History\n10.Back\n");
         printf("\nEnter your choice: ");
         scanf("%d",&choice);
 
@@ -441,7 +501,7 @@ void adminMenu(manageVehicle *vehicle){
         case DisplayRentalHistory: displayRentalHistory(vehicle);
             break;
 
-        case ExitAdmin: printf("Exiting...\n");
+        case ExitAdmin: printf("Going Back...\n");
             return;
 
         default:printf("Invalid Choice\n");
@@ -456,6 +516,7 @@ enum{
     Sort,
     Rent,
     Return,
+    History,
     ExitUser
 };
 
@@ -467,7 +528,7 @@ void userMenu(manageVehicle *vehicle){
         printf("--------------------------\n");
         printf("1.Display Vehicle\n2.Search Vehicle\n3.Sort Vehicle"
                "\n4.Rent Vehicle\n5.Return Vehicle"
-               "\n6.Exit\n");
+               "\n6.History\n7.Back\n");
         printf("\nEnter your choice: ");
         scanf("%d",&choice);
 
@@ -488,7 +549,10 @@ void userMenu(manageVehicle *vehicle){
         case Return: returnVehicles(vehicle);
             break;
 
-        case ExitUser: printf("Exiting...\n");
+        case History: //history(vehicle);
+            break;
+
+        case ExitUser: printf("Going Back...\n");
             return;
 
         default:printf("Invalid Choice\n");
@@ -497,11 +561,5 @@ void userMenu(manageVehicle *vehicle){
     }
 }
 
-void readLoginData(login *login){
-    login->adminList = NULL;
-    login->customerList = NULL;
-
-    readPersonData(login);
-}
 
 

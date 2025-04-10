@@ -61,6 +61,7 @@ DIST          =  adminDetails.h \
 		bookingDetails.h \
 		customerDetails.h \
 		manageLogin.h \
+		payment.h \
 		personDetails.h \
 		rentVehicleDetails.h \
 		rentalBikes.h \
@@ -121,6 +122,7 @@ release/main.o: ../../main.c ../../manageLogin.h \
 		../../customerDetails.h \
 		../../vehicleManagement.h \
 		../../bookingDetails.h \
+		../../payment.h \
 		../../rentalBikes.h \
 		../../rentVehicleDetails.h \
 		../../rentalCars.h
@@ -132,6 +134,7 @@ release/manageLogin.o: ../../manageLogin.c ../../manageLogin.h \
 		../../customerDetails.h \
 		../../vehicleManagement.h \
 		../../bookingDetails.h \
+		../../payment.h \
 		../../rentalBikes.h \
 		../../rentVehicleDetails.h \
 		../../rentalCars.h
@@ -139,6 +142,7 @@ release/manageLogin.o: ../../manageLogin.c ../../manageLogin.h \
 
 release/vehicleManagement.o: ../../vehicleManagement.c ../../vehicleManagement.h \
 		../../bookingDetails.h \
+		../../payment.h \
 		../../rentalBikes.h \
 		../../rentVehicleDetails.h \
 		../../rentalCars.h

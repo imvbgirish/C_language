@@ -1,12 +1,1 @@
-Bike Bajaj Pulser KA34G3456 Available 1560
-Bike KTM Duke KA45S9789 Available 2340
-Bike Jawa Perak KA68Z0001 Available 3200
-Bike RoyalEnfield Classic KA27S1999 Available 3500
-Bike Ducati Monster797 KA51Q1122 Available 6000
-Bike Kawasaki Ninja KA21L8790 Available 9000
-Bike BMW X200 KA07B8654 Available 10000
-Car BMW A1 KA01G1117 Available 5000
-Car Kia Carnival KA32N7654 Available 15000
-Car MG Hector KA54J8765 Available 2345
-Car Mahindra Thar KA27L9876 Available 20000
-Car Hyundai Extreme KA21K9158 Available 12800
+Bike Bajaj Pulser KA77H7887 Booked 700

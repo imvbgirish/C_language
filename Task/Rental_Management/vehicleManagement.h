@@ -38,7 +38,8 @@ void updateCarPrice(manageVehicle *vehicle);
 
 void readBookingData(manageVehicle *vehicle);
 void addBookingData(manageVehicle *vehicle,char *type, char *name, char *contactNumber,
-                    char *brand, char *vehicleNum, int rentDuration,int rentPrice);
+                    char *brand, char *vehicleNum, int rentDuration,int rentPrice,char *status,
+                    char *paymentType, char *paymentID, char *paymentStatus,int  paidAmount);
 void displayRentalHistory(manageVehicle *vehicle);
 void writeBookingData(manageVehicle *vehicle);
 
@@ -54,6 +55,15 @@ void deleteVehicle(manageVehicle *vehicle);
 void deleteBike(manageVehicle *vehicle);
 void deleteCar(manageVehicle *vehicle);
 
+void bikes(manageVehicle *vehicle);
+void showAvailableBike(manageVehicle *vehicle);
+void showBookedBike(manageVehicle *vehicle);
+
+void cars(manageVehicle *vehicle);
+void showAvailableCar(manageVehicle *vehicle);
+void showBookedCar(manageVehicle *vehicle);
+
 void readAllData(manageVehicle *vehicle);
+void history(manageVehicle *vehicle);
 
 #endif // VEHICLEMANAGEMENT_H
