@@ -15,6 +15,7 @@ HEADERS += \
     bookingDetails.h \
     customerDetails.h \
     manageLogin.h \
+    payment.h \
     personDetails.h \
     rentVehicleDetails.h \
     rentalBikes.h \
