@@ -4,14 +4,14 @@
 #include "payment.h"
 
 typedef struct bookingDetails{
-    char type[20];
-    char name[20];
-    char contactNumber[10];
-    char brand[15];
-    char vehicleNum[15];
+    char type[5];
+    char name[11];
+    char contactNumber[12];
+    char brand[13];
+    char vehicleNum[10];
     int rentDuration;
     int rentPrice;
-    char status[15];
+    char status[11];
     payment *payment;
 }book;
 

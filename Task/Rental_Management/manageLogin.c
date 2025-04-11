@@ -17,10 +17,10 @@ void readPersonData(login *login){
         exit(0);
     }
 
-    char name[20];
-    char contactNumber[15];
-    char emailID[20];
-    char password[20];
+    char name[10];
+    char contactNumber[12];
+    char emailID[18];
+    char password[12];
     char isAdmin[10];
 
     while(fscanf(fp,"%s %s %s %s %s",name,contactNumber,emailID,password,isAdmin)!=EOF){
@@ -129,7 +129,6 @@ void displayCustomerlist(login *login){
 void registerAdmin(login *login){
     printf("\nRegister Admin \n");
     printf("--------------------------\n");
-    int attempt = 1;
 
     char name[10];
     char contactNumber[10];
@@ -140,12 +139,13 @@ void registerAdmin(login *login){
     printf("Enter name: ");
     scanf("%s",name);
 
+    int attempt = 1;
     while(attempt<=3){
         printf("Enter contact Number: ");
         scanf("%s",contactNumber);
 
         if(strlen(contactNumber)!=10){
-            printf("Enter valid contact number.\n");
+            printf("Enter valid contact number.\n\n");
             attempt++;
         }else{
             break;
@@ -153,15 +153,29 @@ void registerAdmin(login *login){
     }
 
     if(attempt > 3){
-        printf("\nRegistration failed,try after some time.\n");
+        printf("Registration failed,try after some time.\n");
         return;
     }
 
     printf("Enter EmailID: ");
     scanf("%s",emailID);
 
-    printf("Enter password: ");
-    scanf("%s",password);
+    int count = 1;
+    while(count<=3){
+        printf("Enter password: ");
+        scanf("%s",password);
+
+        if(strlen(password)>10){
+            printf("Password should be less than 10 characters.\n\n");
+            count++;
+        }else{
+            break;
+        }
+    }
+    if(count > 3){
+        printf("Entered password does not match criteria.\n");
+        return;
+    }
 
     strcpy(isAdmin,"Yes");
 
@@ -173,7 +187,7 @@ void adminLogin(login *login){
     int attempt = 1;
     char contactNumber[15];
     char password[15];
-    int found =0;
+    // int found =0;
 
     printf("\nLogin\n");
     printf("-------------------------------------\n");
@@ -183,7 +197,7 @@ void adminLogin(login *login){
         scanf("%s",contactNumber);
 
         if(strlen(contactNumber)!=10){
-            printf("Enter valid contact number.\n");
+            printf("Enter valid contact number.\n\n");
             attempt++;
         }else{
             break;
@@ -200,33 +214,41 @@ void adminLogin(login *login){
     }else{
         for(int i=0; i<numOfAdmins; i++){
             if(strcasecmp(login->adminList[i].admin->contactNumber,contactNumber)==0){
-                printf("Enter Password: ");
-                scanf("%s",password);
-                found = 1;
-                if(strcasecmp(login->adminList[i].admin->password,password)==0){
-                    // strcpy(login->loggedName, login->adminList[i].admin->name);
-                    strcpy(login->loggedContact, login->adminList[i].admin->contactNumber);
-                    printf("Login successfull...\n");
-                    adminMenu(&vehicle);
-                    break;
-                }else{
-                    printf("Invalid password.\n");
+                int attempt = 1;
+                while(attempt<=3){
+                    printf("Enter Password: ");
+                    scanf("%s",password);
+
+                    if(strcasecmp(login->adminList[i].admin->password,password)==0){
+                        // found = 1;
+                        strcpy(vehicle.isAdmin,login->adminList[i].admin->isAdmin);
+                        //printf("%s",vehicle.isAdmin);
+                        printf("Login successfull...\n");
+                        adminMenu(&vehicle);
+                        break;
+                    }else{
+                        printf("Invalid password,try again.\n\n");
+                        attempt++;
+                    }
+                }
+                if(attempt > 3){
+                    printf("\nIncorrect password entered multiple times.\n");
                     return;
                 }
             }
         }
     }
-    if(!found){
-        printf("Details not found\n");
-        return;
-    }
+    // if(!found){
+    //     printf("Details not found\n");
+    //     return;
+    // }
 }
 
 void userLogin(login *login){
     int attempt = 1;
     char contactNumber[15];
     char password[15];
-    int found = 0;
+    // int found = 0;
 
     printf("\nLogin\n");
     printf("-------------------------------------\n");
@@ -253,33 +275,43 @@ void userLogin(login *login){
     }else{
         for(int i=0; i<numOfCustomers; i++){
             if(strcasecmp(login->customerList[i].customer->contactNumber,contactNumber)==0){
-                printf("Enter Password: ");
-                scanf("%s",password);
-                found = 1;
-                if(strcasecmp(login->customerList[i].customer->password,password)==0){
-                    // strcpy(login->loggedName, login->customerList[i].customer->name);
-                    strcpy(login->loggedContact, login->customerList[i].customer->contactNumber);
-                    printf("Login successfull...\n");
-                    userMenu(&vehicle);
-                    break;
-                }else{
-                    printf("Invalid password.\n");
+                int attempt = 1;
+                while(attempt<=3){
+                    printf("Enter Password: ");
+                    scanf("%s",password);
+
+                    if(strcasecmp(login->customerList[i].customer->password,password)==0){
+                        // found = 1;
+                        strcpy(vehicle.loggedContact,contactNumber);
+                        strcpy(vehicle.loggedName,login->customerList[i].customer->name);
+                        strcpy(vehicle.isAdmin,login->customerList[i].customer->isAdmin);
+                        //printf("%s",vehicle.loggedName);
+                        //printf("%s",vehicle.loggedContact);
+                        printf("Login successfull...\n");
+                        userMenu(&vehicle);
+                        break;
+                    }else{
+                        printf("Invalid password,try again.\n\n");
+                        attempt++;
+                    }
+                }
+                if(attempt > 3){
+                    printf("\nIncorrect password entered multiple times.\n");
                     return;
                 }
             }
         }
     }
-    if(!found){
-        printf("Details not found\n");
-        return;
-    }
+    // if(!found){
+    //     printf("Details not found\n");
+    //     return;
+    // }
 }
-
 
 void registerUser(login *login){
     printf("\nRegister User \n");
     printf("--------------------------\n");
-    int attempt = 1;
+
     char username[10];
     char contactNumber[15];
     char emailID[20];
@@ -289,6 +321,7 @@ void registerUser(login *login){
     printf("Enter name: ");
     scanf("%s",username);
 
+    int attempt = 1;
     while(attempt<=3){
         printf("Enter contact Number: ");
         scanf("%s",contactNumber);
@@ -301,7 +334,7 @@ void registerUser(login *login){
         }
     }
     if(attempt > 3){
-        printf("\nRegistration failed,try after some time.\n");
+        printf("Registration failed,try after some time.\n");
         return;
     }
 
@@ -309,8 +342,22 @@ void registerUser(login *login){
     printf("Enter EmailID: ");
     scanf("%s",emailID);
 
-    printf("Enter password: ");
-    scanf("%s",password);
+    int count = 1;
+    while(count<=3){
+        printf("Enter password: ");
+        scanf("%s",password);
+
+        if(strlen(password)>10){
+            printf("Password should be less than 10 characters.\n\n");
+            count++;
+        }else{
+            break;
+        }
+    }
+    if(count > 3){
+        printf("Entered password does not match criteria.\n");
+        return;
+    }
 
     strcpy(isAdmin,"No");
 
@@ -549,7 +596,7 @@ void userMenu(manageVehicle *vehicle){
         case Return: returnVehicles(vehicle);
             break;
 
-        case History: //history(vehicle);
+        case History: history(vehicle);
             break;
 
         case ExitUser: printf("Going Back...\n");
