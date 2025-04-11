@@ -1,0 +1,46 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+    float a;
+    float b;
+    struct node *next;
+};
+
+struct node *head;
+
+void insert(float x,float y){
+    struct node *temp;
+    temp = (struct node*)malloc(sizeof(struct node));
+    temp->a = x;
+    temp->b = y;
+    temp->next = head;
+    head= temp;
+}
+void print(){
+    struct node *temp;
+    temp= head;
+    printf("\n the linked list is :");
+    while(head!=NULL){
+        printf("data is : %f %f",temp->a,temp->b);
+        temp=temp->next;
+    }
+}
+
+int main()
+{
+    int n,i,x,y;
+    head = NULL;
+    struct node *temp;
+    printf("\n enter the  number of data to enter:");
+    scanf("%d",&n);
+    for(i=0;i<n;i++){
+        printf("\n enter x-cordinate: \n");
+        scanf("%f",&x);
+        printf("\n eter y-cordinate: \n");
+        scanf("%f",&y);
+        insert(x,y);
+    }
+    print();
+    return 0;
+}

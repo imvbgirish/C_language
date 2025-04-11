@@ -1,0 +1,9 @@
+
+int big,a,b,c;
+int a =1;
+int b =2;
+int c =6;
+
+big = (a>b?(a>c?b:c):(b>c?b:c));
+
+
