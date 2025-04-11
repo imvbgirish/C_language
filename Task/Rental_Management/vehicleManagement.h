@@ -9,6 +9,9 @@ typedef struct vehicleManagement{
     bike *bikelist;
     car *carlist;
     book *bookinglist;
+    char loggedContact[12];
+    char loggedName[11];
+    char isAdmin[4];
 }manageVehicle;
 
 void readVehicleData(manageVehicle *vehicle);
