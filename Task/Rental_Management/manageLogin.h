@@ -8,7 +8,6 @@
 typedef struct managelogin{
     admin *adminList;
     customer *customerList;
-    char *loggedContact;
 }login;
 
 void readPersonData(login *login);

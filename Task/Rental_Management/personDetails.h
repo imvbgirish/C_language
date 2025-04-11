@@ -2,10 +2,10 @@
 #define PERSONDETAILS_H
 
 typedef struct personDetails{
-    char name[15];
-    char contactNumber[15];
-    char emailID[20];
-    char password[15];
+    char name[12];
+    char contactNumber[12];
+    char emailID[18];
+    char password[12];
     char isAdmin[5];
 }person;
 

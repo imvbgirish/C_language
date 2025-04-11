@@ -450,8 +450,8 @@ void readBookingData(manageVehicle *vehicle){
 
     char type[10];
     char name[10];
-    char contactNumber[10];
-    char brand[15];
+    char contactNumber[12];
+    char brand[13];
     char vehicleNum[10];
     int rentDuration;
     int rentPrice;
@@ -471,7 +471,7 @@ void readBookingData(manageVehicle *vehicle){
 
 void addBookingData(manageVehicle *vehicle, char *type, char *name, char *contactNumber, char *brand, char *vehicleNum, int rentDuration,
                     int rentPrice, char *status, char *paymentType, char *paymentID, char *paymentStatus, int paidAmount){
-    printf("start\n");
+    //printf("start\n");
     FILE *fp;
     fp = fopen("RentalHistory.txt","r");
 
@@ -505,7 +505,7 @@ void addBookingData(manageVehicle *vehicle, char *type, char *name, char *contac
     vehicle->bookinglist[bookHistory].payment->paidAmount = paidAmount;
 
     bookHistory++;
-    printf("end\n");
+    //printf("end\n");
 }
 
 void writeBookingData(manageVehicle *vehicle){
@@ -513,7 +513,7 @@ void writeBookingData(manageVehicle *vehicle){
     fp = fopen("RentalHistory.txt","w");
 
     if(fp == NULL){
-        printf("File not found\n");
+        printf("Rental history File not found\n");
         return;
     }
 
@@ -541,11 +541,11 @@ void displayRentalHistory(manageVehicle *vehicle){
         printf("No data to display\n");
         return;
     }else{
-        printf("\nType\tName\tContact\tBrand\tVehNum\tDuration\tRentAmt\tStatus\tPayType\tPayID\tPayStatus\tPaidAmt\n");
+        printf("\nType\tName\tContact\t\tBrand\tVehNum\tDays\tRentAmt\tStatus\tPayType\tPayID\tPayStatus\tPaidAmt\n");
         printf("---------------------------------------------------------"
                "---------------------------------------------------------\n");
         for(int i=0; i<bookHistory; i++){
-            printf("%4s %3s %8s %9s %9s %8d %8d %9s %9s %9s %9s %8d\n",
+            printf("%-5s %-9s %-13s %-9s %10s %5d %6d %8s %8s %8s %8s %12d\n",
                    vehicle->bookinglist[i].type,
                    vehicle->bookinglist[i].name,
                    vehicle->bookinglist[i].contactNumber,
@@ -570,11 +570,11 @@ enum{
 void rentBike(manageVehicle *vehicle){
 
     char name[10];
-    char contactNumber[10];
+    char contactNumber[12];
     int rentDuration;
     char paymentID[10];
-    char brand[15];
-    char model[15];
+    char brand[12];
+    char model[12];
     int amount;
     int found = 0;
 
@@ -586,85 +586,173 @@ void rentBike(manageVehicle *vehicle){
     printf("Enter model: ");
     scanf("%s",model);
 
-    for(int i=0; i<numOfBikes; i++){
-        if(strcasecmp(vehicle->bikelist[i].bike->brand,brand)==0 &&
-            strcasecmp(vehicle->bikelist[i].bike->model,model)==0){
-            found = 1;
-            if(strcasecmp(vehicle->bikelist[i].bike->status,"Available")==0){
-                printf("Enter your name: ");
-                scanf("%s",name);
 
-                printf("Enter contact number: ");
-                scanf("%s",contactNumber);
+    if(strcasecmp(vehicle->isAdmin,"No")==0){
 
-                printf("Enter rent duration in days: ");
-                scanf("%d",&rentDuration);
+        for(int i=0; i<numOfBikes; i++){
+            if(strcasecmp(vehicle->bikelist[i].bike->brand,brand)==0 &&
+                strcasecmp(vehicle->bikelist[i].bike->model,model)==0){
+                found = 1;
+                if(strcasecmp(vehicle->bikelist[i].bike->status,"Available")==0){
+                    printf("Enter rent duration in days: ");
+                    scanf("%d",&rentDuration);
 
-                printf("Pay amount: %d\n",vehicle->bikelist[i].bike->rentPrice*rentDuration);
-                while(1){
+                    printf("Pay amount: %d\n",vehicle->bikelist[i].bike->rentPrice*rentDuration);
+                    while(1){
 
-                    int choice = 0;
-                    printf("\nPayment options\n");
-                    printf("--------------------\n");
-                    printf("1.UPI\n2.Cash\n");
+                        int choice = 0;
+                        printf("\nPayment options\n");
+                        printf("--------------------\n");
+                        printf("1.UPI\n2.Cash\n");
 
-                    printf("\nSelect payment mode: ");
-                    scanf("%d",&choice);
+                        printf("\nSelect payment mode: ");
+                        scanf("%d",&choice);
 
-                    switch(choice){
+                        switch(choice){
 
-                    case UPI:
-                        printf("Enter payment amount: ");
-                        scanf("%d",&amount);
-                        if(vehicle->bikelist[i].bike->rentPrice*rentDuration == amount){
+                        case UPI:
+                            printf("Enter payment amount: ");
+                            scanf("%d",&amount);
+                            if(vehicle->bikelist[i].bike->rentPrice*rentDuration == amount){
 
-                            printf("Enter paytment ID: ");
-                            scanf("%s",paymentID);
-                            addBookingData(vehicle,"Bike",name,contactNumber,brand,
-                                           vehicle->bikelist[i].bike->vehicleNum,
-                                           rentDuration,
-                                           vehicle->bikelist[i].bike->rentPrice,
-                                           "Booked","UPI",
-                                           paymentID,
-                                           "Paid",
-                                           amount);
-                            strcpy(vehicle->bikelist[i].bike->status,"Booked");
-                            printf("Bike Booked Successfully...\n");
-                            return;
-                        }else{
-                            printf("Enter correct amount.\n");
+                                printf("Enter paytment ID: ");
+                                scanf("%s",paymentID);
+                                addBookingData(vehicle,"Bike",
+                                               vehicle->loggedName,
+                                               vehicle->loggedContact,
+                                               brand,
+                                               vehicle->bikelist[i].bike->vehicleNum,
+                                               rentDuration,
+                                               vehicle->bikelist[i].bike->rentPrice,
+                                               "Booked","UPI",
+                                               paymentID,
+                                               "Paid",
+                                               amount);
+                                strcpy(vehicle->bikelist[i].bike->status,"Booked");
+                                printf("Bike Booked Successfully...\n");
+                                return;
+                            }else{
+                                printf("Enter correct amount.\n");
+                                break;
+                            }
+
+                        case Cash:
+                            printf("\nEnter payment amount: ");
+                            scanf("%d",&amount);
+                            if(vehicle->bikelist[i].bike->rentPrice*rentDuration == amount){
+
+                                addBookingData(vehicle,"Bike",
+                                               vehicle->loggedName,vehicle->loggedContact,brand,
+                                               vehicle->bikelist[i].bike->vehicleNum,
+                                               rentDuration,
+                                               vehicle->bikelist[i].bike->rentPrice,
+                                               "Booked","Cash",
+                                               "Null",
+                                               "Paid",
+                                               amount);
+                                strcpy(vehicle->bikelist[i].bike->status,"Booked");
+                                printf("Bike Booked Successfully...\n");
+                                return;
+                            }else{
+                                printf("Enter correct amount.\n");
+                                break;
+                            }
+                        default:printf("Invalid choice\n");
                             break;
                         }
-
-                    case Cash:
-                        printf("\nEnter payment amount: ");
-                        scanf("%d",&amount);
-                        if(vehicle->bikelist[i].bike->rentPrice*rentDuration == amount){
-
-                            addBookingData(vehicle,"Bike",name,contactNumber,brand,
-                                           vehicle->bikelist[i].bike->vehicleNum,
-                                           rentDuration,
-                                           vehicle->bikelist[i].bike->rentPrice,
-                                           "Booked","Cash",
-                                           "Null",
-                                           "Paid",
-                                           amount);
-                            strcpy(vehicle->bikelist[i].bike->status,"Booked");
-                            printf("Bike Booked Successfully...\n");
-                            return;
-                        }else{
-                            printf("Enter correct amount.\n");
-                            break;
-                        }
-
-                    default:printf("Invalid choice\n");
-                        break;
                     }
                 }
+                else if(strcasecmp(vehicle->bikelist[i].bike->status,"Booked")==0){
+                    printf("Unable to book, bike is already booked.\n");
+                    break;
+                }
             }
-            else if(strcasecmp(vehicle->bikelist[i].bike->status,"Booked")==0){
-                printf("Unable to book, bike is already booked.\n");
-                break;
+        }
+    }else if(strcasecmp(vehicle->isAdmin,"Yes")==0){
+
+        for(int i=0; i<numOfBikes; i++){
+            if(strcasecmp(vehicle->bikelist[i].bike->brand,brand)==0 &&
+                strcasecmp(vehicle->bikelist[i].bike->model,model)==0){
+                found = 1;
+                if(strcasecmp(vehicle->bikelist[i].bike->status,"Available")==0){
+                    printf("Enter user name: ");
+                    scanf("%s",name);
+
+                    printf("Enter contact number: ");
+                    scanf("%s",contactNumber);
+
+                    printf("Enter rent duration in days: ");
+                    scanf("%d",&rentDuration);
+
+                    printf("Pay amount: %d\n",vehicle->bikelist[i].bike->rentPrice*rentDuration);
+                    while(1){
+
+                        int choice = 0;
+                        printf("\nPayment options\n");
+                        printf("--------------------\n");
+                        printf("1.UPI\n2.Cash\n");
+
+                        printf("\nSelect payment mode: ");
+                        scanf("%d",&choice);
+
+                        switch(choice){
+
+                        case UPI:
+                            printf("Enter payment amount: ");
+                            scanf("%d",&amount);
+                            if(vehicle->bikelist[i].bike->rentPrice*rentDuration == amount){
+
+                                printf("Enter paytment ID: ");
+                                scanf("%s",paymentID);
+                                addBookingData(vehicle,"Bike",
+                                               name,
+                                               contactNumber,
+                                               brand,
+                                               vehicle->bikelist[i].bike->vehicleNum,
+                                               rentDuration,
+                                               vehicle->bikelist[i].bike->rentPrice,
+                                               "Booked","UPI",
+                                               paymentID,
+                                               "Paid",
+                                               amount);
+                                strcpy(vehicle->bikelist[i].bike->status,"Booked");
+                                printf("Bike Booked Successfully...\n");
+                                return;
+                            }else{
+                                printf("Enter correct amount.\n");
+                                break;
+                            }
+
+                        case Cash:
+                            printf("\nEnter payment amount: ");
+                            scanf("%d",&amount);
+                            if(vehicle->bikelist[i].bike->rentPrice*rentDuration == amount){
+
+                                addBookingData(vehicle,"Bike",
+                                               name,contactNumber,brand,
+                                               vehicle->bikelist[i].bike->vehicleNum,
+                                               rentDuration,
+                                               vehicle->bikelist[i].bike->rentPrice,
+                                               "Booked","Cash",
+                                               "Null",
+                                               "Paid",
+                                               amount);
+                                strcpy(vehicle->bikelist[i].bike->status,"Booked");
+                                printf("Bike Booked Successfully...\n");
+                                return;
+                            }else{
+                                printf("Enter correct amount.\n");
+                                break;
+                            }
+                        default:printf("Invalid choice\n");
+                            break;
+                        }
+                    }
+                }
+                else if(strcasecmp(vehicle->bikelist[i].bike->status,"Booked")==0){
+                    printf("Unable to book, bike is already booked.\n");
+                    break;
+                }
             }
         }
     }
@@ -675,11 +763,11 @@ void rentBike(manageVehicle *vehicle){
 void rentCar(manageVehicle *vehicle){
 
     char name[10];
-    char contactNumber[10];
+    char contactNumber[12];
     int rentDuration;
     char paymentID[10];
-    char brand[15];
-    char model[15];
+    char brand[12];
+    char model[12];
     int amount;
     int found = 0;
 
@@ -691,84 +779,172 @@ void rentCar(manageVehicle *vehicle){
     printf("Enter model: ");
     scanf("%s",model);
 
-    for(int i=0; i<numOfCars; i++){
-        if(strcasecmp(vehicle->carlist[i].car->brand,brand)==0 &&
-            strcasecmp(vehicle->carlist[i].car->model,model)==0){
-            found = 1;
-            if(strcasecmp(vehicle->carlist[i].car->status,"Available")==0){
-                printf("Enter your name: ");
-                scanf("%s",name);
+    if(strcasecmp(vehicle->isAdmin,"No")==0){
 
-                printf("Enter contact number: ");
-                scanf("%s",contactNumber);
+        for(int i=0; i<numOfCars; i++){
+            if(strcasecmp(vehicle->carlist[i].car->brand,brand)==0 &&
+                strcasecmp(vehicle->carlist[i].car->model,model)==0){
+                found = 1;
+                if(strcasecmp(vehicle->carlist[i].car->status,"Available")==0){
+                    printf("Enter rent duration in days: ");
+                    scanf("%d",&rentDuration);
 
-                printf("Enter rent duration in days: ");
-                scanf("%d",&rentDuration);
+                    printf("Pay amount: %d\n",vehicle->bikelist[i].bike->rentPrice*rentDuration);
+                    while(1){
 
+                        int choice = 0;
+                        printf("\nPayment options\n");
+                        printf("--------------------\n");
+                        printf("1.UPI\n2.Cash\n");
 
-                printf("Pay amount: %d\n",vehicle->carlist[i].car->rentPrice*rentDuration);
-                while(1){
+                        printf("\nSelect payment mode: ");
+                        scanf("%d",&choice);
 
-                    int choice = 0;
-                    printf("\nPayment options\n");
-                    printf("--------------------\n");
-                    printf("1.UPI\n2.Cash\n");
+                        switch(choice){
 
-                    printf("\nSelect payment mode: ");
-                    scanf("%d",&choice);
+                        case UPI:
+                            printf("Enter payment amount: ");
+                            scanf("%d",&amount);
+                            if(vehicle->carlist[i].car->rentPrice*rentDuration == amount){
 
-                    switch(choice){
+                                printf("Enter paytment ID: ");
+                                scanf("%s",paymentID);
+                                addBookingData(vehicle,"Car",
+                                               vehicle->loggedName,
+                                               vehicle->loggedContact,
+                                               brand,
+                                               vehicle->carlist[i].car->vehicleNum,
+                                               rentDuration,
+                                               vehicle->carlist[i].car->rentPrice,
+                                               "Booked","UPI",
+                                               paymentID,
+                                               "Paid",
+                                               amount);
+                                strcpy(vehicle->carlist[i].car->status,"Booked");
+                                printf("Bike Booked Successfully...\n");
+                                return;
+                            }else{
+                                printf("Enter correct amount.\n");
+                                break;
+                            }
 
-                    case UPI:
-                        printf("Enter payment amount: ");
-                        scanf("%d",&amount);
-                        if(vehicle->carlist[i].car->rentPrice*rentDuration == amount){
+                        case Cash:
+                            printf("\nEnter payment amount: ");
+                            scanf("%d",&amount);
+                            if(vehicle->carlist[i].car->rentPrice*rentDuration == amount){
 
-                            printf("Enter paytment ID: ");
-                            scanf("%s",paymentID);
-                            addBookingData(vehicle,"Car",name,contactNumber,brand,
-                                           vehicle->carlist[i].car->vehicleNum,
-                                           rentDuration,
-                                           vehicle->carlist[i].car->rentPrice,
-                                           "Booked","UPI",
-                                           paymentID,
-                                           "Paid",
-                                           amount);
-                            strcpy(vehicle->carlist[i].car->status,"Booked");
-                            printf("Car Booked Successfully...\n");
-                            return;
-                        }else{
-                            printf("Enter correct amount.\n");
+                                addBookingData(vehicle,"Car",
+                                               vehicle->loggedName,vehicle->loggedContact,brand,
+                                               vehicle->carlist[i].car->vehicleNum,
+                                               rentDuration,
+                                               vehicle->carlist[i].car->rentPrice,
+                                               "Booked","Cash",
+                                               "Null",
+                                               "Paid",
+                                               amount);
+                                strcpy(vehicle->carlist[i].car->status,"Booked");
+                                printf("Bike Booked Successfully...\n");
+                                return;
+                            }else{
+                                printf("Enter correct amount.\n");
+                                break;
+                            }
+                        default:printf("Invalid choice\n");
                             break;
                         }
-
-                    case Cash:
-                        printf("\nEnter payment amount: ");
-                        scanf("%d",&amount);
-                        if(vehicle->carlist[i].car->rentPrice*rentDuration == amount){
-                            addBookingData(vehicle,"Car",name,contactNumber,brand,
-                                           vehicle->carlist[i].car->vehicleNum,
-                                           rentDuration,
-                                           vehicle->carlist[i].car->rentPrice,
-                                           "Booked","Cash",
-                                           "Null",
-                                           "Paid",
-                                           amount);
-                            strcpy(vehicle->carlist[i].car->status,"Booked");
-                            printf("Car Booked Successfully...\n");
-                            return;
-                        }else{
-                            printf("Enter correct amount.\n");
-                            break;
-                        }
-                    default:printf("Invalid choice\n");
-                        break;
                     }
                 }
+                else if(strcasecmp(vehicle->carlist[i].car->status,"Booked")==0){
+                    printf("Unable to book, bike is already booked.\n");
+                    break;
+                }
             }
-            else if(strcasecmp(vehicle->carlist[i].car->status,"Booked")==0){
-                printf("Unable to book, Car is already booked.\n");
-                break;
+        }
+    }else if(strcasecmp(vehicle->isAdmin,"Yes")==0){
+
+        for(int i=0; i<numOfCars; i++){
+            if(strcasecmp(vehicle->carlist[i].car->brand,brand)==0 &&
+                strcasecmp(vehicle->carlist[i].car->model,model)==0){
+                found = 1;
+                if(strcasecmp(vehicle->carlist[i].car->status,"Available")==0){
+                    printf("Enter user name: ");
+                    scanf("%s",name);
+
+                    printf("Enter contact number: ");
+                    scanf("%s",contactNumber);
+
+                    printf("Enter rent duration in days: ");
+                    scanf("%d",&rentDuration);
+
+                    printf("Pay amount: %d\n",vehicle->carlist[i].car->rentPrice*rentDuration);
+                    while(1){
+
+                        int choice = 0;
+                        printf("\nPayment options\n");
+                        printf("--------------------\n");
+                        printf("1.UPI\n2.Cash\n");
+
+                        printf("\nSelect payment mode: ");
+                        scanf("%d",&choice);
+
+                        switch(choice){
+
+                        case UPI:
+                            printf("Enter payment amount: ");
+                            scanf("%d",&amount);
+                            if(vehicle->carlist[i].car->rentPrice*rentDuration == amount){
+
+                                printf("Enter paytment ID: ");
+                                scanf("%s",paymentID);
+                                addBookingData(vehicle,"Car",
+                                               name,
+                                               contactNumber,
+                                               brand,
+                                               vehicle->carlist[i].car->vehicleNum,
+                                               rentDuration,
+                                               vehicle->carlist[i].car->rentPrice,
+                                               "Booked","UPI",
+                                               paymentID,
+                                               "Paid",
+                                               amount);
+                                strcpy(vehicle->carlist[i].car->status,"Booked");
+                                printf("Car Booked Successfully...\n");
+                                return;
+                            }else{
+                                printf("Enter correct amount.\n");
+                                break;
+                            }
+
+                        case Cash:
+                            printf("\nEnter payment amount: ");
+                            scanf("%d",&amount);
+                            if(vehicle->carlist[i].car->rentPrice*rentDuration == amount){
+
+                                addBookingData(vehicle,"Car",
+                                               name,contactNumber,brand,
+                                               vehicle->carlist[i].car->vehicleNum,
+                                               rentDuration,
+                                               vehicle->carlist[i].car->rentPrice,
+                                               "Booked","Cash",
+                                               "Null",
+                                               "Paid",
+                                               amount);
+                                strcpy(vehicle->carlist[i].car->status,"Booked");
+                                printf("Car Booked Successfully...\n");
+                                return;
+                            }else{
+                                printf("Enter correct amount.\n");
+                                break;
+                            }
+                        default:printf("Invalid choice\n");
+                            break;
+                        }
+                    }
+                }
+                else if(strcasecmp(vehicle->carlist[i].car->status,"Booked")==0){
+                    printf("Unable to book, Car is already booked.\n");
+                    break;
+                }
             }
         }
     }
@@ -783,6 +959,7 @@ void returnBike(manageVehicle *vehicle){
 
     printf("\nReturn Vehicle\n");
     printf("-------------------------------\n");
+
     printf("Enter vehicle number: ");
     scanf("%s",vehicleNumber);
 
@@ -790,17 +967,42 @@ void returnBike(manageVehicle *vehicle){
         printf("No vehicle to return.\n");
         return;
     }
-    else{
+
+    if(strcasecmp(vehicle->isAdmin,"Yes")==0){
         for(int i=0; i<numOfBikes; i++){
             if(strcasecmp(vehicle->bikelist[i].bike->vehicleNum,vehicleNumber)==0 &&
                 strcasecmp(vehicle->bikelist[i].bike->status,"Booked")==0){
                 found = 1;
-                strcpy(vehicle->bikelist[i].bike->status,"Available");
+
                 for(int j=0; j<bookHistory; j++){
                     if(strcasecmp(vehicle->bookinglist[j].vehicleNum,vehicleNumber)==0){
                         strcpy(vehicle->bookinglist[j].status,"Returned");
                     }
                 }
+                strcpy(vehicle->bikelist[i].bike->status,"Available");
+                printf("Vehicle returned successfully.\n");
+                return;
+            }
+            else if(strcasecmp(vehicle->bikelist[i].bike->vehicleNum,vehicleNumber)==0 &&
+                     strcasecmp(vehicle->bikelist[i].bike->status,"Available")==0){
+                printf("Bike is not booked yet.\n");
+                return;
+            }
+        }
+    }
+    else if(strcasecmp(vehicle->isAdmin,"No")==0){
+        for(int i=0; i<numOfBikes; i++){
+            if(strcasecmp(vehicle->bikelist[i].bike->vehicleNum,vehicleNumber)==0 &&
+                strcasecmp(vehicle->bikelist[i].bike->status,"Booked")==0){
+                found = 1;
+
+                for(int j=0; j<bookHistory; j++){
+                    if(strcasecmp(vehicle->bookinglist[j].contactNumber,vehicle->loggedContact)==0 &&
+                        strcasecmp(vehicle->bookinglist[j].vehicleNum,vehicleNumber)==0){
+                        strcpy(vehicle->bookinglist[j].status,"Returned");
+                    }
+                }
+                strcpy(vehicle->bikelist[i].bike->status,"Available");
                 printf("Vehicle returned successfully.\n");
                 return;
             }
@@ -812,7 +1014,7 @@ void returnBike(manageVehicle *vehicle){
         }
     }
     if(!found){
-        printf("Bike not found.\n");
+        printf("Booking not found.\n");
         return;
     }
 }
@@ -830,17 +1032,41 @@ void returnCar(manageVehicle *vehicle){
         printf("No vehicle to return.\n");
         return;
     }
-    else{
+    if(strcasecmp(vehicle->isAdmin,"Yes")==0){
         for(int i=0; i<numOfCars; i++){
             if(strcasecmp(vehicle->carlist[i].car->vehicleNum,vehicleNumber)==0 &&
-                strcasecmp(vehicle->bikelist[i].bike->status,"Booked")==0){
+                strcasecmp(vehicle->carlist[i].car->status,"Booked")==0){
                 found = 1;
-                strcpy(vehicle->carlist[i].car->status,"Available");
+
                 for(int j=0; j<bookHistory; j++){
                     if(strcasecmp(vehicle->bookinglist[j].vehicleNum,vehicleNumber)==0){
                         strcpy(vehicle->bookinglist[j].status,"Returned");
                     }
                 }
+                strcpy(vehicle->carlist[i].car->status,"Available");
+                printf("Vehicle returned successfully.\n");
+                return;
+            }
+            else if(strcasecmp(vehicle->carlist[i].car->vehicleNum,vehicleNumber)==0 &&
+                     strcasecmp(vehicle->carlist[i].car->status,"Available")==0){
+                printf("Car is not booked yet.\n");
+                return;
+            }
+        }
+    }
+    else if(strcasecmp(vehicle->isAdmin,"No")==0){
+        for(int i=0; i<numOfCars; i++){
+            if(strcasecmp(vehicle->carlist[i].car->vehicleNum,vehicleNumber)==0 &&
+                strcasecmp(vehicle->carlist[i].car->status,"Booked")==0){
+                found = 1;
+
+                for(int j=0; j<bookHistory; j++){
+                    if(strcasecmp(vehicle->bookinglist[j].contactNumber,vehicle->loggedContact)==0 &&
+                        strcasecmp(vehicle->bookinglist[j].vehicleNum,vehicleNumber)==0){
+                        strcpy(vehicle->bookinglist[j].status,"Returned");
+                    }
+                }
+                strcpy(vehicle->carlist[i].car->status,"Available");
                 printf("Vehicle returned successfully.\n");
                 return;
             }
@@ -1314,43 +1540,39 @@ void cars(manageVehicle *vehicle){
     }
 }
 
-// void history(manageVehicle *vehicle){
-//     login login;
-//     int found = 0;
+void history(manageVehicle *vehicle){
 
-//     //printf("%s",login.loggedContact);
+    int found = 0;
 
-//     if(vehicle->bookinglist == NULL){
-//         printf("No data found.\n");
-//         return;
-//     }else{
-//         for(int i=0; i<bookHistory; i++){
-//             if(strcpy(vehicle->bookinglist[i].contactNumber,login.loggedContact)==0){
-//                 found = 1;
-//                 printf("\nType\tName\tContact\tBrand\tVehNum\tDuration\tRentAmt\tStatus\tPayType\tPayID\tPayStatus\tPaidAmt\n");
-//                 printf("---------------------------------------------------------"
-//                        "---------------------------------------------------------\n");
-//                 for(int i=0; i<bookHistory; i++){
-//                     printf("%4s %9s %9s %9s %9s %8d %8d %9s %9s %9s %9s %8d\n",
-//                            vehicle->bookinglist[i].type,
-//                            vehicle->bookinglist[i].name,
-//                            vehicle->bookinglist[i].contactNumber,
-//                            vehicle->bookinglist[i].brand,
-//                            vehicle->bookinglist[i].vehicleNum,
-//                            vehicle->bookinglist[i].rentDuration,
-//                            vehicle->bookinglist[i].rentPrice,
-//                            vehicle->bookinglist[i].status,
-//                            vehicle->bookinglist[i].payment->paymentType,
-//                            vehicle->bookinglist[i].payment->paymentID,
-//                            vehicle->bookinglist[i].payment->paymentStatus,
-//                            vehicle->bookinglist[i].payment->paidAmount);
-//                 }
-//             }
-//         }
-//     }
-//     if(!found){
-//         printf("No details found.\n");
-//         return;
-//     }
-// }
-
+    //printf("%s",vehicle->loggedContact);
+    if(vehicle->bookinglist == NULL){
+        printf("No data found for booking details.\n");
+        return;
+    }else{
+        printf("\nType\tName\tContact\t\tBrand\tVehNum\tDays\tRentAmt\tStatus\tPayType\tPayID\tPayStatus\tPaidAmt\n");
+        printf("---------------------------------------------------------"
+               "---------------------------------------------------------\n");
+        for(int i=0; i<bookHistory; i++){
+            if(strcasecmp(vehicle->bookinglist[i].contactNumber,vehicle->loggedContact)==0){
+                found = 1;
+                printf("%-5s %-9s %-13s %-9s %10s %5d %6d %8s %8s %8s %8s %12d\n",
+                       vehicle->bookinglist[i].type,
+                       vehicle->bookinglist[i].name,
+                       vehicle->bookinglist[i].contactNumber,
+                       vehicle->bookinglist[i].brand,
+                       vehicle->bookinglist[i].vehicleNum,
+                       vehicle->bookinglist[i].rentDuration,
+                       vehicle->bookinglist[i].rentPrice,
+                       vehicle->bookinglist[i].status,
+                       vehicle->bookinglist[i].payment->paymentType,
+                       vehicle->bookinglist[i].payment->paymentID,
+                       vehicle->bookinglist[i].payment->paymentStatus,
+                       vehicle->bookinglist[i].payment->paidAmount);
+            }
+        }
+    }
+    if(!found){
+        printf("No user order details found.\n");
+        return;
+    }
+}
