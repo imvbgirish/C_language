@@ -69,4 +69,7 @@ void showBookedCar(manageVehicle *vehicle);
 void readAllData(manageVehicle *vehicle);
 void history(manageVehicle *vehicle);
 
+void sortBikePriceQsort(manageVehicle *vehicle);
+void sortCarPriceQsort(manageVehicle *vehicle);
+
 #endif // VEHICLEMANAGEMENT_H
