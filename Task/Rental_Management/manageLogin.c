@@ -47,7 +47,6 @@ void addPersonData(login *login,char *name,char *contactNumber,char *emailID,cha
             printf("Memory allocation failed for admin details\n");
             return;
         }
-
         strcpy(login->adminList[numOfAdmins].admin->name,name);
         strcpy(login->adminList[numOfAdmins].admin->contactNumber,contactNumber);
         strcpy(login->adminList[numOfAdmins].admin->emailID,emailID);
@@ -73,7 +72,6 @@ void addPersonData(login *login,char *name,char *contactNumber,char *emailID,cha
             printf("Memory allocation failed for customer details\n");
             return;
         }
-
         strcpy(login->customerList[numOfCustomers].customer->name,name);
         strcpy(login->customerList[numOfCustomers].customer->contactNumber,contactNumber);
         strcpy(login->customerList[numOfCustomers].customer->emailID,emailID);
@@ -151,7 +149,6 @@ void registerAdmin(login *login){
             break;
         }
     }
-
     if(attempt > 3){
         printf("Registration failed,try after some time.\n");
         return;
@@ -187,7 +184,6 @@ void adminLogin(login *login){
     int attempt = 1;
     char contactNumber[15];
     char password[15];
-    // int found =0;
 
     printf("\nLogin\n");
     printf("-------------------------------------\n");
@@ -238,10 +234,6 @@ void adminLogin(login *login){
             }
         }
     }
-    // if(!found){
-    //     printf("Details not found\n");
-    //     return;
-    // }
 }
 
 void userLogin(login *login){
@@ -302,10 +294,6 @@ void userLogin(login *login){
             }
         }
     }
-    // if(!found){
-    //     printf("Details not found\n");
-    //     return;
-    // }
 }
 
 void registerUser(login *login){
@@ -607,6 +595,3 @@ void userMenu(manageVehicle *vehicle){
         }
     }
 }
-
-
-
