@@ -1581,9 +1581,9 @@ int compareBikePrices(const void *pa, const void *pb) {
     bike *bikeA = (bike *)pa;
     bike *bikeB = (bike *)pb;
 
-    if (bikeA->bike->rentPrice > bikeB->bike->rentPrice) {
+    if (bikeA->bike->rentPrice > bikeB->bike->rentPrice){
         return 1;
-    }else if (bikeA->bike->rentPrice < bikeB->bike->rentPrice) {
+    }else if (bikeA->bike->rentPrice < bikeB->bike->rentPrice){
         return -1;
     }
     return 0;
@@ -1601,9 +1601,9 @@ int compareCarPrices(const void *pa, const void *pb){
     car *carA = (car *)pa;
     car *carB = (car *)pb;
 
-    if (carA->car->rentPrice > carB->car->rentPrice) {
+    if (carA->car->rentPrice > carB->car->rentPrice){
         return 1;
-    }else if (carA->car->rentPrice < carB->car->rentPrice) {
+    }else if (carA->car->rentPrice < carB->car->rentPrice){
         return -1;
     }
     return 0;

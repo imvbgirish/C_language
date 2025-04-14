@@ -1,8 +1,8 @@
 Bike Bajaj Pulser KA77H7887 Booked 700
-Bike Bajaj Kawasaki KA27M5432 Booked 1000
+Bike Bajaj Kawasaki KA27M5432 Available 1000
 Bike TVS Apache KA01M9087 Booked 1500
 Bike Jawa Perak KA27G1117 Booked 3000
-Bike Enfield Classic KA68J9898 Booked 3200
+Bike Enfield Classic KA68J9898 Available 3200
 Car Maruthi Suzuki KA34H7120 Available 7000
 Car Hyundai Creta KA66Q2039 Available 9000
 Car TATA Harrier KA12N3456 Available 11200
