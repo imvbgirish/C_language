@@ -1178,11 +1178,11 @@ void sort(manageVehicle *vehicle){
         scanf("%d", &choice);
 
         switch(choice){
-        case Bike:sortByPriceBike(vehicle);
+        case Bike:sortBikePriceQsort(vehicle);
             displayBikes(vehicle);
             break;
 
-        case Car:sortByPriceCar(vehicle);
+        case Car:sortCarPriceQsort(vehicle);
             displayCars(vehicle);
             break;
 
@@ -1575,4 +1575,44 @@ void history(manageVehicle *vehicle){
         printf("No user order details found.\n");
         return;
     }
+}
+
+int compareBikePrices(const void *pa, const void *pb) {
+    bike *bikeA = (bike *)pa;
+    bike *bikeB = (bike *)pb;
+
+    if (bikeA->bike->rentPrice > bikeB->bike->rentPrice) {
+        return 1;
+    }else if (bikeA->bike->rentPrice < bikeB->bike->rentPrice) {
+        return -1;
+    }
+    return 0;
+}
+
+void sortBikePriceQsort(manageVehicle *vehicle){
+    if(vehicle->bikelist == NULL){
+        printf("No data to sort\n");
+        return;
+    }
+    qsort(vehicle->bikelist, numOfBikes, sizeof(bike), compareBikePrices);
+}
+
+int compareCarPrices(const void *pa, const void *pb){
+    car *carA = (car *)pa;
+    car *carB = (car *)pb;
+
+    if (carA->car->rentPrice > carB->car->rentPrice) {
+        return 1;
+    }else if (carA->car->rentPrice < carB->car->rentPrice) {
+        return -1;
+    }
+    return 0;
+}
+
+void sortCarPriceQsort(manageVehicle *vehicle){
+    if(vehicle->carlist == NULL){
+        printf("No data to sort.\n");
+        return;
+    }
+    qsort(vehicle->carlist,numOfCars, sizeof(car), compareCarPrices);
 }
