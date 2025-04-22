@@ -821,7 +821,7 @@ void rentCar(manageVehicle *vehicle){
                                                "Paid",
                                                amount);
                                 strcpy(vehicle->carlist[i].car->status,"Booked");
-                                printf("Bike Booked Successfully...\n");
+                                printf("Car Booked Successfully...\n");
                                 return;
                             }else{
                                 printf("Enter correct amount.\n");
@@ -843,7 +843,7 @@ void rentCar(manageVehicle *vehicle){
                                                "Paid",
                                                amount);
                                 strcpy(vehicle->carlist[i].car->status,"Booked");
-                                printf("Bike Booked Successfully...\n");
+                                printf("Car Booked Successfully...\n");
                                 return;
                             }else{
                                 printf("Enter correct amount.\n");
@@ -855,7 +855,7 @@ void rentCar(manageVehicle *vehicle){
                     }
                 }
                 else if(strcasecmp(vehicle->carlist[i].car->status,"Booked")==0){
-                    printf("Unable to book, bike is already booked.\n");
+                    printf("Unable to book, car is already booked.\n");
                     break;
                 }
             }
