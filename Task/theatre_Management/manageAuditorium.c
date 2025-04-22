@@ -157,15 +157,20 @@ char *monthName(int num){
 
 void showAvailable(manageAuditorium *manageAuditorium){
     int date;
-    char month[12];
+    int month = 0;
     int found = 0;
     printf("Enter date: ");
     scanf("%d",&date);
+
+    printf("Enter month: ");
+    scanf("%d",&month);
+
+    char *nameofMonth = monthName(month);
     printf("\n");
 
     for(int i=0; i<numofAuditorium; i++){
         if(manageAuditorium->auditoriumList[i].calender->date != date &&
-            manageAuditorium->auditoriumList[i].calender->month != month){
+            manageAuditorium->auditoriumList[i].calender->month != nameofMonth){
             found = 1;
             printf("%s\n",
                    manageAuditorium->auditoriumList[i].auditoriumName);
