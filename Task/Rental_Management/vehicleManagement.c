@@ -768,7 +768,7 @@ void rentCar(manageVehicle *vehicle){
     char paymentID[10];
     char brand[12];
     char model[12];
-    int amount;
+    int amount = 0;
     int found = 0;
 
     printf("\nRenting Car \n");
@@ -789,7 +789,7 @@ void rentCar(manageVehicle *vehicle){
                     printf("Enter rent duration in days: ");
                     scanf("%d",&rentDuration);
 
-                    printf("Pay amount: %d\n",vehicle->bikelist[i].bike->rentPrice*rentDuration);
+                    printf("Pay amount: %d\n",vehicle->carlist[i].car->rentPrice*rentDuration);
                     while(1){
 
                         int choice = 0;

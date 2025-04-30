@@ -7,4 +7,4 @@ Car Maruthi Suzuki KA34H7120 Available 7000
 Car Hyundai Creta KA66Q2039 Available 9000
 Car TATA Harrier KA12N3456 Available 11200
 Car MG Hector KA21K3462 Available 12000
-Car Mahindra Thar KA01L4789 Available 15000
+Car Mahindra Thar KA01L4789 Booked 15000
