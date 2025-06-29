@@ -273,7 +273,6 @@ DIST          = /home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/qt_config.prf \
 		/home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/spec_post.prf \
-		../../.qmake.stash \
 		/home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/toolchain.prf \
 		/home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/default_pre.prf \
@@ -526,7 +525,6 @@ Makefile: ../../Rental_Management.pro /home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/l
 		/home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/qt_config.prf \
 		/home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/toolchain.prf \
 		/home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/default_pre.prf \
@@ -757,7 +755,6 @@ Makefile: ../../Rental_Management.pro /home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/l
 /home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/qt_config.prf:
 /home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/toolchain.prf:
 /home/girish-v-b/Qt/6.9.0/gcc_64/mkspecs/features/default_pre.prf:
