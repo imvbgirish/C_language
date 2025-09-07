@@ -1,10 +1,46 @@
-# Build / Qt cache folders
+# -------------------------
+# Build directories
+# -------------------------
 build/
 qt-build/
+cmake-build-*/
 **/build/
-**/.qtc_clangd/
+
+# -------------------------
+# Compiled object files
+# -------------------------
 *.o
-*.exe
+*.obj
+*.lo
+*.la
+*.al
 *.so
 *.dll
+*.dylib
+*.exe
 *.out
+
+# -------------------------
+# Qt Creator / Qt cache files
+# -------------------------
+*.pro.user
+*.pro.user.* 
+*.qbs.user
+**/.qtc_clangd/
+
+# -------------------------
+# Backup and temporary files
+# -------------------------
+*~
+*.swp
+*.swo
+*.tmp
+*.log
+*.DS_Store
+
+# -------------------------
+# IDE/Editor folders
+# -------------------------
+.vscode/
+.idea/
+*.kate-swp
