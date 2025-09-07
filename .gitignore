@@ -1,32 +1,27 @@
 # -------------------------
-# Build directories
+# Build / Qt cache folders
 # -------------------------
 build/
 qt-build/
-cmake-build-*/
 **/build/
+**/.qtc_clangd/
 
 # -------------------------
-# Compiled object files
+# Qt Creator / Qt user files
+# -------------------------
+*.pro.user*
+*.qbs.user
+*.user            # This will cover CMakeLists.txt.user and similar
+
+# -------------------------
+# Compiled object/binary files
 # -------------------------
 *.o
 *.obj
-*.lo
-*.la
-*.al
 *.so
 *.dll
-*.dylib
 *.exe
 *.out
-
-# -------------------------
-# Qt Creator / Qt cache files
-# -------------------------
-*.pro.user
-*.pro.user.* 
-*.qbs.user
-**/.qtc_clangd/
 
 # -------------------------
 # Backup and temporary files
@@ -39,7 +34,7 @@ cmake-build-*/
 *.DS_Store
 
 # -------------------------
-# IDE/Editor folders
+# IDE / Editor folders
 # -------------------------
 .vscode/
 .idea/
