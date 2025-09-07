@@ -1,0 +1,10 @@
+# Build / Qt cache folders
+build/
+qt-build/
+**/build/
+**/.qtc_clangd/
+*.o
+*.exe
+*.so
+*.dll
+*.out
