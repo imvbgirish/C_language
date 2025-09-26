@@ -1,6 +1,0 @@
-Girish 2345678444 sdfgh@gmail.com 2345 Yes
-Shridhar 9876543333 dfghj@gmail.com 9876 No
-Amith 4567987543 dfgh@gmail.com 2345 No
-Vicky 9876556789 ergh@gmail.com 98765 No
-Mithun 7827345678 rfghn@gmail.com 98707 No
-Darshan 9876545678 efghn@gmail.com 909090 No
